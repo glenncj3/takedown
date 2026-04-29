@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { Game } from './Game';
@@ -132,7 +132,13 @@ describe('Game (hot-seat integration)', () => {
 
     expect(useGameStore.getState().game.phase).toBe('ended');
     expect(useGameStore.getState().game.winner).toBe('bottom');
-    expect(useUIStore.getState().screen).toBe('results');
+    // The Game screen holds briefly after the final placement so flip
+    // transitions can play out before Results takes over.
+    expect(useUIStore.getState().screen).toBe('game');
+    await waitFor(
+      () => expect(useUIStore.getState().screen).toBe('results'),
+      { timeout: 2000 },
+    );
   });
 
   it('clicking the same selected card deselects it', async () => {

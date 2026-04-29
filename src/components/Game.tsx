@@ -6,6 +6,10 @@ import { Hand } from './Hand';
 import { Scoreboard } from './Scoreboard';
 
 const AI_TURN_DELAY_MS = 600;
+// Hold on the Game screen after the 9th placement so the flip rotations
+// (500ms transform transition on Card) play out and the final score
+// registers before the Results screen takes over.
+const END_OF_GAME_DELAY_MS = 900;
 
 export function Game() {
   const lastError = useGameStore((s) => s.lastError);
@@ -30,9 +34,14 @@ export function Game() {
   }, [mode, channel, handleRemoteEvent]);
 
   // When the game ends, route to the dedicated Results screen so the
-  // final board, score, and rematch options have room to breathe.
+  // final board, score, and rematch options have room to breathe. The
+  // delay lets the final placement's flip transitions finish on this
+  // screen — Results re-mounts the Board, so transitions started here
+  // wouldn't carry over.
   useEffect(() => {
-    if (phase === 'ended') setScreen('results');
+    if (phase !== 'ended') return;
+    const t = setTimeout(() => setScreen('results'), END_OF_GAME_DELAY_MS);
+    return () => clearTimeout(t);
   }, [phase, setScreen]);
 
   async function backToMenu() {
