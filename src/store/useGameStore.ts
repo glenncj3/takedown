@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { CellIndex, GameState, Player } from '../types';
 import { placeCard as enginePlaceCard } from '../engine/place';
+import { playActionCard as enginePlayActionCard } from '../engine/playAction';
 import { createInitialState } from '../engine/setup';
 import { DECKS_BY_ID } from '../data/decks';
 
@@ -18,6 +19,7 @@ interface GameStore {
   resetGame: (seed?: number) => void;
   selectCard: (instanceId: string | null) => void;
   placeSelectedCardOn: (cell: CellIndex) => void;
+  playActionCard: (instanceId: string) => void;
   // Test/debug hook: load an externally-constructed state.
   loadGame: (state: GameState) => void;
 }
@@ -65,6 +67,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (!selectedInstanceId) return;
     try {
       const next = enginePlaceCard(game, selectedInstanceId, cell);
+      set({ game: next, selectedInstanceId: null, lastError: null });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      set({ lastError: msg });
+    }
+  },
+
+  playActionCard: (instanceId) => {
+    const { game } = get();
+    try {
+      const next = enginePlayActionCard(game, instanceId);
       set({ game: next, selectedInstanceId: null, lastError: null });
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);

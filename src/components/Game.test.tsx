@@ -19,6 +19,7 @@ function emptyGame(overrides: Partial<GameState> = {}): GameState {
     phase: 'placing',
     winner: null,
     rngSeed: 1,
+    rngState: 1,
     moveSeq: 0,
     ...overrides,
   };

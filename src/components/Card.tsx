@@ -31,12 +31,15 @@ export function CardView({
       aria-label={card.name}
       data-controller={controller}
       data-card-id={card.id}
+      data-card-type={card.type}
       className={[
         'relative h-28 w-20 select-none rounded-md shadow-md',
         'transition-transform duration-300 ease-out',
-        controller === 'bottom'
-          ? 'bg-blue-700 ring-1 ring-blue-300/40'
-          : 'bg-rose-700 ring-1 ring-rose-300/40',
+        isUnit
+          ? controller === 'bottom'
+            ? 'bg-blue-700 ring-1 ring-blue-300/40'
+            : 'bg-rose-700 ring-1 ring-rose-300/40'
+          : 'border-2 border-dashed border-amber-300/70 bg-emerald-900',
         rotated ? 'rotate-180' : '',
         selected ? 'outline outline-4 outline-amber-300 brightness-110' : '',
         interactive

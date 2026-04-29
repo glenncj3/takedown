@@ -54,6 +54,7 @@ export function createInitialState(opts: SetupOptions): GameState {
     phase: 'placing',
     winner: null,
     rngSeed: opts.seed,
+    rngState: rng.state(),
     moveSeq: 0,
   };
 

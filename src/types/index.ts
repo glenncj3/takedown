@@ -74,5 +74,9 @@ export interface GameState {
   phase: Phase;
   winner: Winner | null;
   rngSeed: number;
+  // Current PRNG position. Initialized to the post-setup-shuffle state so
+  // mid-game randomness (e.g. play-from-deck to a random cell) is
+  // deterministic and replayable from the seed alone.
+  rngState: number;
   moveSeq: number;
 }

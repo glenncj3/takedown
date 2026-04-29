@@ -6,6 +6,9 @@ export interface Rng {
   next(): number;
   nextInt(max: number): number;
   shuffle<T>(arr: readonly T[]): T[];
+  // Current PRNG state. Capture this after a batch of consumptions to
+  // resume the same stream later (used for in-state RNG persistence).
+  state(): number;
 }
 
 export function createRng(seed: number): Rng {
@@ -38,5 +41,5 @@ export function createRng(seed: number): Rng {
     return out;
   }
 
-  return { next, nextInt, shuffle };
+  return { next, nextInt, shuffle, state: () => state };
 }

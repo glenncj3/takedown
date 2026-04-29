@@ -1,13 +1,25 @@
 import type { CellIndex, GameState, PlacedCard, Player } from '../types';
 import { computeFlips } from './flip';
 
+// Callback fired after each individual flip during chain resolution. Phase 3
+// wires this up to the ability trigger queue so that on-flip handlers run
+// between flips — meaning a flipped card's stat changes (from its on-flip
+// ability) influence subsequent chain steps. May modify state.
+export type OnFlipHook = (state: GameState, flippedCell: CellIndex) => GameState;
+
+export interface ResolveContext {
+  onFlip?: OnFlipHook;
+}
+
 // Runs the chain resolution from DESIGN §5 steps 4-5: initial flips against
 // the placed card's neighbors, then iterative flip evaluation against each
 // newly-flipped card. Pure: returns a new GameState.
-//
-// Phase 1 is stat-only — no ability triggers. Phase 3 will splice on-play /
-// on-flip / on-end-of-turn firings into the same flow.
-export function resolvePlacement(state: GameState, cellIndex: CellIndex): GameState {
+export function resolvePlacement(
+  state: GameState,
+  cellIndex: CellIndex,
+  ctx?: ResolveContext,
+): GameState {
+  const onFlip: OnFlipHook = ctx?.onFlip ?? ((s) => s);
   let next = state;
 
   const initial = computeFlips(next, cellIndex);
@@ -18,6 +30,7 @@ export function resolvePlacement(state: GameState, cellIndex: CellIndex): GameSt
 
   for (const cell of initial) {
     next = applyFlip(next, cell);
+    next = onFlip(next, cell);
     flippedThisChain.add(cell);
     queue.push(cell);
   }
@@ -32,6 +45,7 @@ export function resolvePlacement(state: GameState, cellIndex: CellIndex): GameSt
       // neighbors).
       if (flippedThisChain.has(flipCell)) continue;
       next = applyFlip(next, flipCell);
+      next = onFlip(next, flipCell);
       flippedThisChain.add(flipCell);
       queue.push(flipCell);
     }

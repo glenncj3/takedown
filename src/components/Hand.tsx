@@ -12,6 +12,7 @@ export function Hand({ player }: HandProps) {
   const phase = useGameStore((s) => s.game.phase);
   const selectedId = useGameStore((s) => s.selectedInstanceId);
   const selectCard = useGameStore((s) => s.selectCard);
+  const playActionCard = useGameStore((s) => s.playActionCard);
 
   const isActive = turn === player && phase === 'placing';
 
@@ -30,8 +31,13 @@ export function Hand({ player }: HandProps) {
       )}
       {hand.map((ci) => {
         const isSelected = ci.instanceId === selectedId;
+        const isAction = ci.card.type === 'action';
+        // Action cards play immediately on click; unit cards toggle selection
+        // and require a follow-up cell click to place.
         const handler = isActive
-          ? () => selectCard(isSelected ? null : ci.instanceId)
+          ? isAction
+            ? () => playActionCard(ci.instanceId)
+            : () => selectCard(isSelected ? null : ci.instanceId)
           : undefined;
         return (
           <CardView
