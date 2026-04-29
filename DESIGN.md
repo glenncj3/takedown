@@ -8,7 +8,7 @@ A reference implementation exists at `glenncj3/draft-mension-20`. Where that rep
 
 ## 1. Overview
 
-A 1v1 grid-based card game in the Triple Triad lineage, extended with action cards and triggered abilities. Two play modes:
+A 1v1 grid-based card game, extended with action cards and triggered abilities. Two play modes:
 
 - **Versus AI** — single-player against a heuristic opponent.
 - **Versus friend** — two clients connect via a shared room code over Supabase Realtime Broadcast.

@@ -29,7 +29,7 @@ export function Menu() {
         Takedown
       </h1>
       <p className="max-w-md text-center text-sm text-slate-400">
-        A 1v1 grid-based card game in the Triple Triad lineage.
+        A 1v1 grid-based card game.
       </p>
       <label className="flex flex-col gap-1 text-sm">
         Display name

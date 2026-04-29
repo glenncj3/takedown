@@ -1,6 +1,6 @@
 # Takedown
 
-A 1v1 grid-based card game in the Triple Triad lineage. Hobby project.
+A 1v1 grid-based card game. Hobby project.
 
 Two play modes:
 
