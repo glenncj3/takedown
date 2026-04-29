@@ -14,21 +14,32 @@ export function Game() {
   const turn = useGameStore((s) => s.game.turn);
   const phase = useGameStore((s) => s.game.phase);
   const aiTurn = useGameStore((s) => s.aiTurn);
+  const channel = useGameStore((s) => s.channel);
+  const handleRemoteEvent = useGameStore((s) => s.handleRemoteEvent);
+  const exitMultiplayer = useGameStore((s) => s.exitMultiplayer);
   const setScreen = useUIStore((s) => s.setScreen);
 
-  // Schedule an AI turn whenever it becomes top's turn in AI mode. The
-  // delay gives the player a beat to read the board after their move.
   useEffect(() => {
     if (mode !== 'ai' || turn !== 'top' || phase !== 'placing') return;
     const t = setTimeout(() => aiTurn(), AI_TURN_DELAY_MS);
     return () => clearTimeout(t);
   }, [mode, turn, phase, aiTurn]);
 
+  useEffect(() => {
+    if (mode !== 'multiplayer' || !channel) return;
+    return channel.onEvent(handleRemoteEvent);
+  }, [mode, channel, handleRemoteEvent]);
+
+  async function backToMenu() {
+    if (mode === 'multiplayer') await exitMultiplayer();
+    setScreen('menu');
+  }
+
   return (
     <main className="relative flex min-h-screen flex-col items-center gap-3 bg-slate-900 px-4 py-6 text-slate-100">
       <button
         type="button"
-        onClick={() => setScreen('menu')}
+        onClick={backToMenu}
         className="absolute left-4 top-4 rounded border border-slate-700 px-3 py-1 text-xs text-slate-300 transition-colors hover:bg-slate-800"
       >
         ← Menu

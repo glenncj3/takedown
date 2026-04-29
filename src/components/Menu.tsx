@@ -1,14 +1,12 @@
 import { useGameStore } from '../store/useGameStore';
 import { useUIStore } from '../store/useUIStore';
 
-// Minimal menu for Phase 4. Phase 6 will replace this with a polished
-// version that also offers Host friend / Join friend.
 export function Menu() {
   const setScreen = useUIStore((s) => s.setScreen);
   const setMode = useGameStore((s) => s.setMode);
   const startGame = useGameStore((s) => s.startGame);
 
-  function start(mode: 'ai' | 'hot-seat') {
+  function startSinglePlayer(mode: 'ai' | 'hot-seat') {
     setMode(mode);
     startGame();
     setScreen('game');
@@ -25,15 +23,29 @@ export function Menu() {
       <div className="flex flex-col gap-3">
         <button
           type="button"
-          onClick={() => start('ai')}
+          onClick={() => startSinglePlayer('ai')}
           className="min-w-[14rem] rounded bg-amber-500 px-6 py-3 text-lg font-medium text-slate-900 transition-colors hover:bg-amber-400"
         >
           Play vs AI
         </button>
         <button
           type="button"
-          onClick={() => start('hot-seat')}
+          onClick={() => setScreen('host-lobby')}
           className="min-w-[14rem] rounded border border-slate-600 px-6 py-3 text-lg font-medium text-slate-200 transition-colors hover:bg-slate-800"
+        >
+          Host friend game
+        </button>
+        <button
+          type="button"
+          onClick={() => setScreen('join-lobby')}
+          className="min-w-[14rem] rounded border border-slate-600 px-6 py-3 text-lg font-medium text-slate-200 transition-colors hover:bg-slate-800"
+        >
+          Join friend game
+        </button>
+        <button
+          type="button"
+          onClick={() => startSinglePlayer('hot-seat')}
+          className="min-w-[14rem] rounded border border-slate-700 px-6 py-2 text-sm text-slate-400 transition-colors hover:bg-slate-800"
         >
           Hot-seat
         </button>
