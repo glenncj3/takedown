@@ -49,6 +49,7 @@ export function Hand({ player }: HandProps) {
             selected={isSelected}
             interactive={isActive}
             onClick={handler}
+            inspectInstanceId={ci.instanceId}
           />
         );
       })}

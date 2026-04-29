@@ -33,6 +33,7 @@ export function Cell({ index }: CellProps) {
           card={placed.card}
           controller={placed.controller}
           liveStats={placed.stats}
+          inspectInstanceId={placed.instanceId}
         />
       )}
     </div>

@@ -5,6 +5,7 @@ import { useUIStore } from '../store/useUIStore';
 import type { Player } from '../types';
 import { Board } from './Board';
 import { Hand } from './Hand';
+import { InspectOverlay } from './InspectOverlay';
 import { Scoreboard } from './Scoreboard';
 
 const AI_TURN_DELAY_MS = 600;
@@ -79,6 +80,7 @@ export function Game() {
           {lastError}
         </p>
       )}
+      <InspectOverlay />
     </main>
   );
 }

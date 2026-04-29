@@ -1,4 +1,8 @@
+import { useRef } from 'react';
 import type { Card, CardStats, Player } from '../types';
+import { useUIStore } from '../store/useUIStore';
+
+const LONG_PRESS_MS = 400;
 
 interface CardProps {
   card: Card;
@@ -7,6 +11,9 @@ interface CardProps {
   selected?: boolean;
   interactive?: boolean;
   onClick?: () => void;
+  // Enables press-and-hold inspect when set. The id identifies which
+  // hand/board instance to look up in the global inspect overlay.
+  inspectInstanceId?: string;
 }
 
 export function CardView({
@@ -16,6 +23,7 @@ export function CardView({
   selected = false,
   interactive = false,
   onClick,
+  inspectInstanceId,
 }: CardProps) {
   const rotated = controller === 'top';
   const isUnit = card.type === 'unit';
@@ -52,10 +60,58 @@ export function CardView({
   // visually ungrokkable even though the engine is correct.
   const upright = rotated ? '-rotate-180' : '';
 
+  const setInspectedInstanceId = useUIStore((s) => s.setInspectedInstanceId);
+  const timerRef = useRef<number | null>(null);
+  const longPressFiredRef = useRef(false);
+
+  function clearTimer() {
+    if (timerRef.current !== null) {
+      window.clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }
+
+  function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    if (!inspectInstanceId) return;
+    longPressFiredRef.current = false;
+    // Capture so pointerup fires here even if the finger drifts off.
+    // happy-dom (used in tests) doesn't implement setPointerCapture, so
+    // feature-check before calling.
+    if (typeof e.currentTarget.setPointerCapture === 'function') {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
+    timerRef.current = window.setTimeout(() => {
+      longPressFiredRef.current = true;
+      timerRef.current = null;
+      setInspectedInstanceId(inspectInstanceId);
+    }, LONG_PRESS_MS);
+  }
+
+  function handlePointerEnd() {
+    if (!inspectInstanceId) return;
+    clearTimer();
+    if (longPressFiredRef.current) {
+      setInspectedInstanceId(null);
+      // Don't reset longPressFiredRef yet — handleClick reads it to suppress
+      // the synthesized click that follows pointerup.
+    }
+  }
+
+  function handleClick() {
+    if (longPressFiredRef.current) {
+      longPressFiredRef.current = false;
+      return;
+    }
+    onClick?.();
+  }
+
   return (
     <div
       role={onClick ? 'button' : undefined}
-      onClick={onClick}
+      onClick={handleClick}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerEnd}
+      onPointerCancel={handlePointerEnd}
       aria-label={card.name}
       data-controller={controller}
       data-card-id={card.id}

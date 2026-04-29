@@ -13,6 +13,10 @@ export interface AbilityInstance {
   abilityId: string;
   trigger: Trigger;
   params?: Record<string, unknown>;
+  // Human-readable description shown in the inspect overlay. Optional so
+  // existing card data without text still loads; cards with abilities
+  // should populate this.
+  text?: string;
 }
 
 export interface CardStats {
