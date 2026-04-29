@@ -6,6 +6,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         display: ['Bangers', 'cursive'],
+        stat: ['"Rubik Mono One"', 'sans-serif'],
       },
       keyframes: {
         // Bouncy ease for card landing on the board, mirroring the

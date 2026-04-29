@@ -111,7 +111,7 @@ function ExpandedCard({ card, controller, liveStats }: InspectData) {
 }
 
 function statClass(pos: string): string {
-  return `pointer-events-none absolute ${pos} font-display text-4xl leading-none text-amber-100 drop-shadow-[0_2px_3px_rgba(0,0,0,0.85)]`;
+  return `pointer-events-none absolute ${pos} font-stat text-4xl leading-none text-amber-100 drop-shadow-[0_2px_3px_rgba(0,0,0,0.85)]`;
 }
 
 function paletteFor(card: Card, controller: Player) {

@@ -178,7 +178,7 @@ export function CardView({
               data-stat="top"
             >
               <span
-                className={`inline-block font-display text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
+                className={`inline-block font-stat text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
               >
                 {stats.top}
               </span>
@@ -188,7 +188,7 @@ export function CardView({
               data-stat="bottom"
             >
               <span
-                className={`inline-block font-display text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
+                className={`inline-block font-stat text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
               >
                 {stats.bottom}
               </span>
@@ -198,7 +198,7 @@ export function CardView({
               data-stat="left"
             >
               <span
-                className={`inline-block font-display text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
+                className={`inline-block font-stat text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
               >
                 {stats.left}
               </span>
@@ -208,7 +208,7 @@ export function CardView({
               data-stat="right"
             >
               <span
-                className={`inline-block font-display text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
+                className={`inline-block font-stat text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
               >
                 {stats.right}
               </span>

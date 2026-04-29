@@ -17,6 +17,7 @@
   "dependencies": {
     "@fontsource/bangers": "^5.1.0",
     "@fontsource/inter": "^5.1.0",
+    "@fontsource/rubik-mono-one": "^5.2.8",
     "@supabase/supabase-js": "^2.57.4",
     "lucide-react": "^0.555.0",
     "react": "^18.3.1",

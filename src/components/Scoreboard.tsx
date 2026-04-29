@@ -83,7 +83,7 @@ function ScoreCell({ side, label, value, handCount, active, accent }: ScoreCellP
       <div className="flex items-center gap-2">
         <span
           key={value}
-          className="animate-score-pulse font-display text-3xl leading-none"
+          className="animate-score-pulse font-stat text-3xl leading-none"
         >
           {value}
         </span>
