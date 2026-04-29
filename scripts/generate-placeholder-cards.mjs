@@ -30,23 +30,24 @@ function pickPalette(id) {
   return PALETTES[h % PALETTES.length];
 }
 
-function escapeXml(s) {
-  return s.replace(/[<>&'"]/g, (c) =>
-    ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[c],
-  );
-}
-
-function svg(card, palette) {
+function svg(_card, palette) {
+  // Pure visual backdrop — the React overlay renders the name and stats
+  // on top, so baking the name into the PNG would just collide with it.
+  // Designer can replace these PNGs with real art later.
   return `<svg width="240" height="320" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="${palette.from}" />
       <stop offset="1" stop-color="${palette.to}" />
     </linearGradient>
+    <radialGradient id="vignette" cx="50%" cy="40%" r="60%">
+      <stop offset="60%" stop-color="rgba(0,0,0,0)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0.35)" />
+    </radialGradient>
   </defs>
   <rect width="240" height="320" rx="20" fill="url(#g)" />
-  <rect x="14" y="14" width="212" height="292" rx="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" />
-  <text x="120" y="170" text-anchor="middle" font-size="26" font-family="Arial, Helvetica, sans-serif" fill="#ffffff" font-weight="700" letter-spacing="1">${escapeXml(card.name)}</text>
+  <rect width="240" height="320" rx="20" fill="url(#vignette)" />
+  <rect x="14" y="14" width="212" height="292" rx="12" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2" />
 </svg>`;
 }
 

@@ -41,16 +41,24 @@ Cards are visually oriented by controller. Bottom-player cards are rendered righ
 
 When a card `C` controlled by player `P` is placed or flipped at cell `X`:
 
-For each orthogonal neighbor `N` at cell `Y` where `N`'s controller ≠ `P`, compare same-named stats:
+For each orthogonal neighbor `N` at cell `Y` where `N`'s controller ≠ `P`, compare each card's **touching-edge stat in its own data frame**:
 
-- `Y` above `X`: `C.top` vs `N.top`
-- `Y` below `X`: `C.bottom` vs `N.bottom`
-- `Y` left of `X`: `C.left` vs `N.left`
-- `Y` right of `X`: `C.right` vs `N.right`
+- The touching edge is the one facing the neighbor.
+- For an upright (bottom-controlled) card, the touching edge stat is named after the world direction: north-facing edge = `top`, south = `bottom`, west = `left`, east = `right`.
+- For a 180°-rotated (top-controlled) card, the local frame is inverted: north-facing edge = `bottom`, south = `top`, west = `right`, east = `left`.
 
-If `C`'s stat is **strictly greater** than `N`'s stat, `N` flips to `P`'s control. Ties do nothing.
+Concretely, for direction `d` from `C` to `N`:
 
-The "same-named stat" rule is correct because cards are visually rotated by controller: the stat on the touching edge of any card is always its same-named stat regardless of who controls it.
+```
+C_stat = touchingEdgeStat(C.controller, d)
+N_stat = touchingEdgeStat(N.controller, oppositeOf(d))
+```
+
+If `C.stats[C_stat] > N.stats[N_stat]`, `N` flips to `P`'s control. Ties do nothing.
+
+Because `C` and `N` always have opposite controllers when a flip is possible (one upright, one rotated), `C_stat` and `N_stat` always end up being the same data label name — but it is **not** always the world-direction's name. Example: a top-controlled (rotated) placer above a bottom-controlled (upright) neighbor compares `C.top` vs `N.top`, because the rotated placer's south edge displays `data.top` (rotation moved that label from north to south). Treating the world-direction name as the stat name (e.g. always "down → bottom") produces the wrong answer when the placer is rotated.
+
+This makes the visual touching-edge numbers — which is what the player sees — match the engine's flip decision exactly.
 
 ## 5. Turn flow
 
