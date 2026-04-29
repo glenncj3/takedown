@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
+import type { Mode } from '../store/useGameStore';
 import { useGameStore } from '../store/useGameStore';
 import { useUIStore } from '../store/useUIStore';
+import type { Player } from '../types';
 import { Board } from './Board';
 import { Hand } from './Hand';
 import { Scoreboard } from './Scoreboard';
@@ -18,6 +20,7 @@ export function Game() {
   const phase = useGameStore((s) => s.game.phase);
   const aiTurn = useGameStore((s) => s.aiTurn);
   const channel = useGameStore((s) => s.channel);
+  const localPlayer = useGameStore((s) => s.localPlayer);
   const handleRemoteEvent = useGameStore((s) => s.handleRemoteEvent);
   const exitMultiplayer = useGameStore((s) => s.exitMultiplayer);
   const setScreen = useUIStore((s) => s.setScreen);
@@ -49,6 +52,12 @@ export function Game() {
     setScreen('menu');
   }
 
+  // Hide the opponent's hand: revealing their cards would leak hidden
+  // information. The Scoreboard shows a card count + icon as a summary.
+  // In hot-seat both sides are local-controlled, so both hands stay visible.
+  const showTopHand = isLocalControlled('top', mode, localPlayer);
+  const showBottomHand = isLocalControlled('bottom', mode, localPlayer);
+
   return (
     <main className="relative flex min-h-screen flex-col items-center gap-3 bg-slate-900 px-4 py-6 text-slate-100">
       <button
@@ -58,10 +67,10 @@ export function Game() {
       >
         ← Menu
       </button>
-      <Hand player="top" />
+      {showTopHand && <Hand player="top" />}
       <Scoreboard />
       <Board />
-      <Hand player="bottom" />
+      {showBottomHand && <Hand player="bottom" />}
       {lastError && (
         <p
           role="alert"
@@ -72,4 +81,14 @@ export function Game() {
       )}
     </main>
   );
+}
+
+function isLocalControlled(
+  player: Player,
+  mode: Mode,
+  localPlayer: Player | null,
+): boolean {
+  if (mode === 'hot-seat') return true;
+  if (mode === 'ai') return player === 'bottom';
+  return localPlayer === player;
 }

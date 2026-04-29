@@ -1,8 +1,15 @@
+import { GalleryHorizontalEnd } from 'lucide-react';
 import { useGameStore } from '../store/useGameStore';
+import type { Mode } from '../store/useGameStore';
 import { scoreBoard } from '../engine/score';
+import type { Player } from '../types';
 
 export function Scoreboard() {
   const game = useGameStore((s) => s.game);
+  const mode = useGameStore((s) => s.mode);
+  const localPlayer = useGameStore((s) => s.localPlayer);
+  const localName = useGameStore((s) => s.localName);
+  const remoteName = useGameStore((s) => s.remoteName);
   const score = scoreBoard(game);
 
   return (
@@ -12,8 +19,10 @@ export function Scoreboard() {
       className="flex items-center gap-6 rounded bg-slate-950/40 px-4 py-2 text-sm"
     >
       <ScoreCell
-        label="Top"
+        side="top"
+        label={playerLabel('top', mode, localPlayer, localName, remoteName)}
         value={score.top}
+        handCount={game.hands.top.length}
         active={game.turn === 'top' && game.phase === 'placing'}
         accent="text-rose-300"
       />
@@ -21,8 +30,10 @@ export function Scoreboard() {
         Takedown
       </h1>
       <ScoreCell
-        label="Bottom"
+        side="bottom"
+        label={playerLabel('bottom', mode, localPlayer, localName, remoteName)}
         value={score.bottom}
+        handCount={game.hands.bottom.length}
         active={game.turn === 'bottom' && game.phase === 'placing'}
         accent="text-blue-300"
       />
@@ -30,17 +41,36 @@ export function Scoreboard() {
   );
 }
 
+function playerLabel(
+  player: Player,
+  mode: Mode,
+  localPlayer: Player | null,
+  localName: string | null,
+  remoteName: string | null,
+): string {
+  if (mode === 'multiplayer' && localPlayer) {
+    if (player === localPlayer) return localName ?? 'You';
+    return remoteName ?? 'Opponent';
+  }
+  if (mode === 'ai') {
+    return player === 'bottom' ? 'You' : 'AI';
+  }
+  return player === 'top' ? 'Top' : 'Bottom';
+}
+
 interface ScoreCellProps {
+  side: Player;
   label: string;
   value: number;
+  handCount: number;
   active: boolean;
   accent: string;
 }
 
-function ScoreCell({ label, value, active, accent }: ScoreCellProps) {
+function ScoreCell({ side, label, value, handCount, active, accent }: ScoreCellProps) {
   return (
     <div
-      data-testid={`score-${label.toLowerCase()}`}
+      data-testid={`score-${side}`}
       data-active={active}
       className={[
         'flex flex-col items-center rounded px-3 py-1 transition-colors',
@@ -50,12 +80,21 @@ function ScoreCell({ label, value, active, accent }: ScoreCellProps) {
       <span className={`text-[10px] uppercase tracking-wider ${accent}`}>
         {label}
       </span>
-      <span
-        key={value}
-        className="animate-score-pulse font-display text-3xl leading-none"
-      >
-        {value}
-      </span>
+      <div className="flex items-center gap-2">
+        <span
+          key={value}
+          className="animate-score-pulse font-display text-3xl leading-none"
+        >
+          {value}
+        </span>
+        <span
+          className="flex items-center gap-1 text-xs text-slate-400"
+          aria-label={`${handCount} cards in hand`}
+        >
+          <GalleryHorizontalEnd aria-hidden="true" className="h-4 w-4" />
+          {handCount}
+        </span>
+      </div>
     </div>
   );
 }

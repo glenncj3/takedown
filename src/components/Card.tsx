@@ -105,6 +105,16 @@ export function CardView({
           className="pointer-events-none absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-black/55 to-transparent"
         />
 
+        <div
+          className={`pointer-events-none absolute inset-x-0 bottom-0 flex h-12 items-start justify-center px-1 pt-1 ${palette.banner}`}
+        >
+          <span
+            className={`inline-block text-[9px] font-bold uppercase tracking-[0.12em] text-white ${upright}`}
+          >
+            {card.name}
+          </span>
+        </div>
+
         {stats && (
           <>
             <span
@@ -118,7 +128,7 @@ export function CardView({
               </span>
             </span>
             <span
-              className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2"
+              className="pointer-events-none absolute bottom-0.5 left-1/2 -translate-x-1/2"
               data-stat="bottom"
             >
               <span
@@ -149,16 +159,6 @@ export function CardView({
             </span>
           </>
         )}
-
-        <div
-          className={`pointer-events-none absolute inset-x-0 bottom-0 px-1 py-0.5 text-center ${palette.banner}`}
-        >
-          <span
-            className={`inline-block text-[9px] font-bold uppercase tracking-[0.12em] text-white ${upright}`}
-          >
-            {card.name}
-          </span>
-        </div>
       </div>
     </div>
   );
