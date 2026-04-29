@@ -19,7 +19,7 @@ function resolveDeck(ids: string[]): Card[] {
 // two copies of each (20 total). Phase 6 will replace this content with
 // designer-balanced sets.
 const DECK_A_IDS: string[] = [
-  'footman', 'footman',
+  'footman', 'quick-draw',
   'scout', 'scout',
   'militia', 'militia',
   'archer', 'archer',

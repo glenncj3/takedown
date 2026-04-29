@@ -8,5 +8,18 @@
   { "id": "captain",  "type": "unit", "name": "Captain",  "stats": { "top": 5, "bottom": 6, "left": 5, "right": 5 }, "art": "captain.png" },
   { "id": "wizard",   "type": "unit", "name": "Wizard",   "stats": { "top": 7, "bottom": 3, "left": 3, "right": 7 }, "art": "wizard.png" },
   { "id": "knight",   "type": "unit", "name": "Knight",   "stats": { "top": 5, "bottom": 5, "left": 6, "right": 6 }, "art": "knight.png" },
-  { "id": "dragon",   "type": "unit", "name": "Dragon",   "stats": { "top": 8, "bottom": 7, "left": 8, "right": 7 }, "art": "dragon.png" }
+  { "id": "dragon",   "type": "unit", "name": "Dragon",   "stats": { "top": 8, "bottom": 7, "left": 8, "right": 7 }, "art": "dragon.png" },
+  {
+    "id": "quick-draw",
+    "type": "action",
+    "name": "Quick Draw",
+    "abilities": [
+      {
+        "abilityId": "draw-card",
+        "trigger": "on-play",
+        "params": { "count": 1 },
+        "text": "Draw 1 card."
+      }
+    ]
+  }
 ]
