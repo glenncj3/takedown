@@ -1,0 +1,12 @@
+[
+  { "id": "footman",  "type": "unit", "name": "Footman",  "stats": { "top": 2, "bottom": 4, "left": 3, "right": 5 } },
+  { "id": "scout",    "type": "unit", "name": "Scout",    "stats": { "top": 3, "bottom": 3, "left": 4, "right": 4 } },
+  { "id": "militia",  "type": "unit", "name": "Militia",  "stats": { "top": 4, "bottom": 2, "left": 4, "right": 4 } },
+  { "id": "archer",   "type": "unit", "name": "Archer",   "stats": { "top": 5, "bottom": 3, "left": 5, "right": 3 } },
+  { "id": "spearman", "type": "unit", "name": "Spearman", "stats": { "top": 4, "bottom": 5, "left": 4, "right": 5 } },
+  { "id": "cavalier", "type": "unit", "name": "Cavalier", "stats": { "top": 6, "bottom": 4, "left": 4, "right": 4 } },
+  { "id": "captain",  "type": "unit", "name": "Captain",  "stats": { "top": 5, "bottom": 6, "left": 5, "right": 5 } },
+  { "id": "wizard",   "type": "unit", "name": "Wizard",   "stats": { "top": 7, "bottom": 3, "left": 3, "right": 7 } },
+  { "id": "knight",   "type": "unit", "name": "Knight",   "stats": { "top": 5, "bottom": 5, "left": 6, "right": 6 } },
+  { "id": "dragon",   "type": "unit", "name": "Dragon",   "stats": { "top": 8, "bottom": 7, "left": 8, "right": 7 } }
+]
