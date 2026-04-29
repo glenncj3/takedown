@@ -4,7 +4,11 @@ import type { Mode } from '../store/useGameStore';
 import { scoreBoard } from '../engine/score';
 import type { Player } from '../types';
 
-export function Scoreboard() {
+interface ScoreboardProps {
+  onBack?: () => void;
+}
+
+export function Scoreboard({ onBack }: ScoreboardProps = {}) {
   const game = useGameStore((s) => s.game);
   const mode = useGameStore((s) => s.mode);
   const localPlayer = useGameStore((s) => s.localPlayer);
@@ -26,9 +30,20 @@ export function Scoreboard() {
         active={game.turn === 'top' && game.phase === 'placing'}
         accent="text-rose-300"
       />
-      <h1 className="font-display text-2xl tracking-wider text-amber-300">
-        Takedown
-      </h1>
+      <div className="flex flex-col items-center gap-1">
+        <h1 className="font-display text-2xl tracking-wider text-amber-300">
+          Takedown
+        </h1>
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="rounded border border-slate-700 px-2 py-0.5 text-[10px] uppercase tracking-wider text-slate-300 transition-colors hover:bg-slate-800"
+          >
+            ← Menu
+          </button>
+        )}
+      </div>
       <ScoreCell
         side="bottom"
         label={playerLabel('bottom', mode, localPlayer, localName, remoteName)}

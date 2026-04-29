@@ -61,15 +61,8 @@ export function Game() {
 
   return (
     <main className="relative flex min-h-screen flex-col items-center gap-3 bg-slate-900 px-4 py-6 text-slate-100">
-      <button
-        type="button"
-        onClick={backToMenu}
-        className="absolute left-4 top-4 rounded border border-slate-700 px-3 py-1 text-xs text-slate-300 transition-colors hover:bg-slate-800"
-      >
-        ← Menu
-      </button>
       {showTopHand && <Hand player="top" />}
-      <Scoreboard />
+      <Scoreboard onBack={backToMenu} />
       <Board />
       {showBottomHand && <Hand player="bottom" />}
       {lastError && (
