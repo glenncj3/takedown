@@ -165,7 +165,7 @@ export function CardView({
 
         <div
           style={{ height: 'calc(var(--card-w) * 0.5)' }}
-          className={`pointer-events-none absolute inset-x-0 bottom-0 flex items-start justify-center px-1 pt-1 ${palette.banner}`}
+          className={`pointer-events-none absolute inset-x-0 bottom-0 flex items-start justify-center px-1 pt-0.5 ${palette.banner}`}
         >
           <span
             style={{ fontSize: 'clamp(7px, calc(var(--card-w) * 0.094), 9px)' }}
