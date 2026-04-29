@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 import type { CellIndex, GameState, Player } from '../types';
+import { aiTakeTurn } from '../ai/play';
 import { placeCard as enginePlaceCard } from '../engine/place';
 import { playActionCard as enginePlayActionCard } from '../engine/playAction';
 import { createInitialState } from '../engine/setup';
 import { DECKS_BY_ID } from '../data/decks';
 
-export type Mode = 'hot-seat';
+export type Mode = 'hot-seat' | 'ai';
 
 interface GameStore {
   game: GameState;
@@ -15,11 +16,15 @@ interface GameStore {
   // when the most recent move was clean.
   lastError: string | null;
 
+  setMode: (mode: Mode) => void;
   startGame: (seed?: number) => void;
   resetGame: (seed?: number) => void;
   selectCard: (instanceId: string | null) => void;
   placeSelectedCardOn: (cell: CellIndex) => void;
   playActionCard: (instanceId: string) => void;
+  // Runs a full AI turn synchronously. Production scheduling happens via a
+  // useEffect in <Game> with a 600ms delay; tests call this directly.
+  aiTurn: () => void;
   // Test/debug hook: load an externally-constructed state.
   loadGame: (state: GameState) => void;
 }
@@ -45,6 +50,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   selectedInstanceId: null,
   mode: 'hot-seat',
   lastError: null,
+
+  setMode: (mode) => set({ mode }),
 
   startGame: (seed) =>
     set({
@@ -83,6 +90,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const msg = e instanceof Error ? e.message : String(e);
       set({ lastError: msg });
     }
+  },
+
+  aiTurn: () => {
+    const { game } = get();
+    if (game.phase !== 'placing') return;
+    const next = aiTakeTurn(game);
+    if (next === game) return; // no-op (e.g. AI stuck — leave state alone)
+    set({ game: next, selectedInstanceId: null, lastError: null });
   },
 
   loadGame: (game) => set({ game, selectedInstanceId: null, lastError: null }),
