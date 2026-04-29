@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { Game } from './Game';
 import { useGameStore } from '../store/useGameStore';
+import { useUIStore } from '../store/useUIStore';
 import { FIXTURE_CARDS, makeInstance, makePlaced } from '../test/fixtures';
 import type { GameState } from '../types';
 
@@ -33,6 +34,7 @@ beforeEach(() => {
 
 afterEach(() => {
   useGameStore.setState({ selectedInstanceId: null, lastError: null });
+  useUIStore.setState({ screen: 'menu' });
 });
 
 describe('Game (hot-seat integration)', () => {
@@ -111,9 +113,8 @@ describe('Game (hot-seat integration)', () => {
     expect(screen.getByTestId('score-top')).toHaveTextContent('0');
   });
 
-  it('shows the game-over overlay after the 9th placement', async () => {
+  it('routes to the results screen after the 9th placement', async () => {
     const user = userEvent.setup();
-    // Eight cells filled, one card left in top's hand at the 9th cell.
     const state = emptyGame({
       hands: { bottom: [], top: [makeInstance(weak, 't9')] },
       turn: 'top',
@@ -123,35 +124,15 @@ describe('Game (hot-seat integration)', () => {
       state.board[i] = makePlaced(balanced, i < 5 ? 'bottom' : 'top', i as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7);
     }
     useGameStore.getState().loadGame(state);
+    useUIStore.setState({ screen: 'game' });
 
     render(<Game />);
-    expect(screen.queryByRole('dialog')).toBeNull();
-
     await user.click(screen.getByLabelText(weak.name));
     await user.click(screen.getByLabelText('Cell 8'));
 
-    const dialog = screen.getByRole('dialog', { name: /game over/i });
-    expect(dialog).toBeInTheDocument();
-    expect(within(dialog).getByText(/bottom wins/i)).toBeInTheDocument();
-    expect(within(dialog).getByRole('button', { name: /play again/i })).toBeInTheDocument();
-  });
-
-  it('"Play again" resets to a fresh game', async () => {
-    const user = userEvent.setup();
-    useGameStore.setState({
-      game: {
-        ...useGameStore.getState().game,
-        phase: 'ended',
-        winner: 'draw',
-      },
-    });
-
-    render(<Game />);
-    const dialog = screen.getByRole('dialog', { name: /game over/i });
-    await user.click(within(dialog).getByRole('button', { name: /play again/i }));
-
-    expect(useGameStore.getState().game.phase).toBe('placing');
-    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(useGameStore.getState().game.phase).toBe('ended');
+    expect(useGameStore.getState().game.winner).toBe('bottom');
+    expect(useUIStore.getState().screen).toBe('results');
   });
 
   it('clicking the same selected card deselects it', async () => {

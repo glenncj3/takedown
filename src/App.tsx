@@ -4,6 +4,7 @@ import { Game } from './components/Game';
 import { HostLobby } from './components/HostLobby';
 import { JoinLobby } from './components/JoinLobby';
 import { Menu } from './components/Menu';
+import { Results } from './components/Results';
 import { useUIStore } from './store/useUIStore';
 
 export function App() {
@@ -23,6 +24,7 @@ export function App() {
       {screen === 'host-lobby' && <HostLobby />}
       {screen === 'join-lobby' && <JoinLobby />}
       {screen === 'game' && <Game />}
+      {screen === 'results' && <Results />}
       {screen === 'desync' && <Desync />}
       {toast && (
         <div

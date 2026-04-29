@@ -4,8 +4,13 @@ import {
   setStoredDisplayName,
 } from '../net/storage';
 
-// DESIGN §14 list of top-level screens. 'results' arrives in Phase 6.
-export type Screen = 'menu' | 'host-lobby' | 'join-lobby' | 'game' | 'desync';
+export type Screen =
+  | 'menu'
+  | 'host-lobby'
+  | 'join-lobby'
+  | 'game'
+  | 'results'
+  | 'desync';
 
 interface UIStore {
   screen: Screen;

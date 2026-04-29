@@ -50,7 +50,12 @@ function ScoreCell({ label, value, active, accent }: ScoreCellProps) {
       <span className={`text-[10px] uppercase tracking-wider ${accent}`}>
         {label}
       </span>
-      <span className="font-display text-3xl leading-none">{value}</span>
+      <span
+        key={value}
+        className="animate-score-pulse font-display text-3xl leading-none"
+      >
+        {value}
+      </span>
     </div>
   );
 }

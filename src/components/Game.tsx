@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useGameStore } from '../store/useGameStore';
 import { useUIStore } from '../store/useUIStore';
 import { Board } from './Board';
-import { GameOver } from './GameOver';
 import { Hand } from './Hand';
 import { Scoreboard } from './Scoreboard';
 
@@ -30,6 +29,12 @@ export function Game() {
     return channel.onEvent(handleRemoteEvent);
   }, [mode, channel, handleRemoteEvent]);
 
+  // When the game ends, route to the dedicated Results screen so the
+  // final board, score, and rematch options have room to breathe.
+  useEffect(() => {
+    if (phase === 'ended') setScreen('results');
+  }, [phase, setScreen]);
+
   async function backToMenu() {
     if (mode === 'multiplayer') await exitMultiplayer();
     setScreen('menu');
@@ -56,7 +61,6 @@ export function Game() {
           {lastError}
         </p>
       )}
-      <GameOver />
     </main>
   );
 }

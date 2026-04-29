@@ -11,7 +11,8 @@
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "images:convert": "node scripts/convert-images.mjs"
+    "images:convert": "node scripts/convert-images.mjs",
+    "images:placeholders": "node scripts/generate-placeholder-cards.mjs"
   },
   "dependencies": {
     "@fontsource/bangers": "^5.1.0",
