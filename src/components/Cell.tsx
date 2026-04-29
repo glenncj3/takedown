@@ -21,8 +21,12 @@ export function Cell({ index }: CellProps) {
       aria-label={`Cell ${index}`}
       data-cell-index={index}
       onClick={onClick}
+      style={{
+        width: 'var(--card-w)',
+        height: 'calc(var(--card-w) * 4 / 3)',
+      }}
       className={[
-        'flex h-32 w-24 items-center justify-center rounded border-2 border-slate-700 bg-slate-800/60',
+        'flex items-center justify-center rounded border-2 border-slate-700 bg-slate-800/60',
         isTarget ? 'cursor-pointer ring-2 ring-amber-300/70 hover:bg-slate-700/60' : '',
       ]
         .filter(Boolean)

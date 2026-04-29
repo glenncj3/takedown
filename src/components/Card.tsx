@@ -117,10 +117,12 @@ export function CardView({
       data-card-id={card.id}
       data-card-type={card.type}
       style={{
+        width: 'var(--card-w)',
+        height: 'calc(var(--card-w) * 4 / 3)',
         transitionTimingFunction: 'cubic-bezier(0.68, -0.4, 0.32, 1.4)',
       }}
       className={[
-        'h-32 w-24 select-none transition-transform duration-500',
+        'select-none transition-transform duration-500',
         rotated ? 'rotate-180' : '',
         interactive
           ? 'cursor-pointer hover:brightness-110 active:translate-y-0.5'
@@ -162,10 +164,12 @@ export function CardView({
         />
 
         <div
-          className={`pointer-events-none absolute inset-x-0 bottom-0 flex h-12 items-start justify-center px-1 pt-1 ${palette.banner}`}
+          style={{ height: 'calc(var(--card-w) * 0.5)' }}
+          className={`pointer-events-none absolute inset-x-0 bottom-0 flex items-start justify-center px-1 pt-1 ${palette.banner}`}
         >
           <span
-            className={`inline-block text-[9px] font-bold uppercase tracking-[0.12em] text-white ${upright}`}
+            style={{ fontSize: 'clamp(7px, calc(var(--card-w) * 0.094), 9px)' }}
+            className={`inline-block font-bold uppercase tracking-[0.12em] text-white ${upright}`}
           >
             {card.name}
           </span>
@@ -178,7 +182,8 @@ export function CardView({
               data-stat="top"
             >
               <span
-                className={`inline-block font-stat text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
+                style={{ fontSize: 'clamp(10px, calc(var(--card-w) * 0.21), 20px)' }}
+                className={`inline-block font-stat leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
               >
                 {stats.top}
               </span>
@@ -188,7 +193,8 @@ export function CardView({
               data-stat="bottom"
             >
               <span
-                className={`inline-block font-stat text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
+                style={{ fontSize: 'clamp(10px, calc(var(--card-w) * 0.21), 20px)' }}
+                className={`inline-block font-stat leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
               >
                 {stats.bottom}
               </span>
@@ -198,7 +204,8 @@ export function CardView({
               data-stat="left"
             >
               <span
-                className={`inline-block font-stat text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
+                style={{ fontSize: 'clamp(10px, calc(var(--card-w) * 0.21), 20px)' }}
+                className={`inline-block font-stat leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
               >
                 {stats.left}
               </span>
@@ -208,7 +215,8 @@ export function CardView({
               data-stat="right"
             >
               <span
-                className={`inline-block font-stat text-xl leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
+                style={{ fontSize: 'clamp(10px, calc(var(--card-w) * 0.21), 20px)' }}
+                className={`inline-block font-stat leading-none text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ${upright}`}
               >
                 {stats.right}
               </span>

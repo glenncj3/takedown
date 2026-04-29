@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Fluid card width. Floor lets a 5-card hand (gap-2, p-2) fit a ~320px
+     viewport; cap matches the original 96px design. Card height and inner
+     type/banner sizes derive from this in Card.tsx and Cell.tsx. */
+  --card-w: clamp(48px, 15vw, 96px);
+}
+
 html,
 body,
 #root {
